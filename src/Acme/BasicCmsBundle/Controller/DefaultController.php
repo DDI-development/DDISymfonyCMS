@@ -41,6 +41,23 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Template()
+     */
+    public function postAction($contentDocument)
+    {
+        $dm = $this->get('doctrine_phpcr')->getManager();
+        $post = $dm->getRepository('AcmeBasicCmsBundle:Post')
+            ->find($contentDocument->getId());
+
+        if (!$post)
+            throw $this->createNotFoundException('Required post is absent');
+
+        return array(
+            'post' => $post
+        );
+    }
+
+    /**
      * @Route(
      *   name="make_homepage",
      *   pattern="/_cms/make_homepage/{id}",
